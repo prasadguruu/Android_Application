@@ -144,8 +144,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Jetpack Compose Documentation
 - Target Brand Guidelines
 
-## Contact
-
-Your Name - [@yourusername](https://twitter.com/yourusername)
-
-Project Link: [https://github.com/yourusername/chit_chat](https://github.com/yourusername/chit_chat) 
