@@ -1,8 +1,6 @@
 # ChitChat - Modern Android Chat Application
 
-<div align="center">
-  <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" alt="ChitChat Logo" width="120"/>
-</div>
+
 
 ## Overview
 
