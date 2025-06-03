@@ -1,0 +1,53 @@
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+    "users": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$uid": {
+        ".read": true,
+        ".write": "auth != null && (auth.uid == $uid || !data.exists())",
+        "isOnline": {
+          ".write": "auth != null"
+        },
+        "lastSeen": {
+          ".write": "auth != null"
+        }
+      }
+    },
+    "chats": {
+      "$chatId": {
+        ".read": "auth != null && ($chatId.matches(/.*-.*/) && ($chatId.matches(concat(auth.uid, '-.*')) || $chatId.matches(concat('.*-', auth.uid))))",
+        ".write": "auth != null && ($chatId.matches(/.*-.*/) && ($chatId.matches(concat(auth.uid, '-.*')) || $chatId.matches(concat('.*-', auth.uid))))",
+        "messages": {
+          "$messageId": {
+            ".read": "auth != null && (root.child('chats').child($chatId).child('messages').child($messageId).child('senderId').val() === auth.uid || $chatId.matches(concat(auth.uid, '-.*')) || $chatId.matches(concat('.*-', auth.uid)))",
+            ".write": "auth != null && (!data.exists() || data.child('senderId').val() === auth.uid || (data.exists() && newData.child('seen').val() === true))"
+          }
+        }
+      }
+    },
+    "groups": {
+      ".read": "auth != null",
+      "$groupId": {
+        ".read": "auth != null && root.child('groups').child($groupId).child('members').child(auth.uid).val() === true",
+        ".write": "auth != null && (!data.exists() || root.child('groups').child($groupId).child('members').child(auth.uid).val() === true || root.child('groups').child($groupId).child('createdBy').val() === auth.uid)",
+        "messages": {
+          ".read": "auth != null && root.child('groups').child($groupId).child('members').child(auth.uid).val() === true",
+          ".write": "auth != null && root.child('groups').child($groupId).child('members').child(auth.uid).val() === true"
+        },
+        "members": {
+          ".read": "auth != null",
+          ".write": "auth != null && (!data.exists() || root.child('groups').child($groupId).child('createdBy').val() === auth.uid)"
+        }
+      }
+    },
+    "presence": {
+      "$uid": {
+        ".read": true,
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    }
+  }
+}
